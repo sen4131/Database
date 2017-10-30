@@ -1,0 +1,61 @@
+USE university;
+
+SELECT facId, name
+FROM Faculty
+ORDER BY name;
+
+SELECT facId, name
+FROM Faculty
+ORDER BY name, department;
+
+SELECT * from Enroll;
+
+SELECT lastname, firstName
+FROM Student
+INNER JOIN Enroll
+ON Student.stuId = Enroll.stuId
+WHERE grade IS null;
+
+select stuId, grade 
+FROM Enroll
+INNER JOIN Class
+ON Enroll.classNumber = Class.classNumber
+WHERE Class.facId = 'F110'
+ORDER BY stuId;
+
+select classNumber
+FROM Class
+WHERE facId in (select facId from Faculty where name = 'Byrne');
+
+select Student.stuId, Student.firstname, Student.lastName
+FROM Student 
+inner join Enroll
+on Student.stuId = Enroll.stuId 
+inner join Class
+on Enroll.classNumber = Class.classNumber
+where Class.facId = 'F110'
+order by Student.firstName;
+
+select Student.firstName, Student.lastName
+from Student
+where exists 
+(select stuId 
+from Enroll 
+where Student.stuId = Enroll.stuId 
+and Enroll.classNumber = 'CSC201A') ;
+
+select Student.firstName, Student.lastName
+from Student
+where not exists
+(select stuId 
+from Enroll 
+where Student.stuId = Enroll.stuId 
+and Enroll.classNumber = 'CSC201A');
+
+select count(stuId)
+from Enroll
+where classNumber = 'ART103A';
+
+SELECT classNumber, Count(*)
+FROM university.Enroll
+group by classNumber;
